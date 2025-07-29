@@ -3,3 +3,4 @@ black
 pyinstaller
 flask
 prettytable
+pyside6

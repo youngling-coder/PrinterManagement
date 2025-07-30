@@ -62,7 +62,11 @@
     </widget>
    </item>
    <item row="4" column="1">
-    <widget class="QLineEdit" name="driverNameEdit"/>
+    <widget class="QLineEdit" name="driverNameEdit">
+     <property name="text">
+      <string>Canon Generic PCL6 Driver</string>
+     </property>
+    </widget>
    </item>
    <item row="5" column="0">
     <widget class="QLabel" name="label_2">
@@ -72,7 +76,11 @@
     </widget>
    </item>
    <item row="5" column="1">
-    <widget class="QLineEdit" name="driverPathEdit"/>
+    <widget class="QLineEdit" name="driverPathEdit">
+     <property name="text">
+      <string>CNP60MA64.inf</string>
+     </property>
+    </widget>
    </item>
    <item row="7" column="1">
     <layout class="QHBoxLayout" name="horizontalLayout">

@@ -3,8 +3,11 @@
 import socket
 from typing import Dict, Any
 
+
 class Printer:
-    def __init__(self, dns: str, name: str, model: str, driver_name: str, driver_inf_path: str):
+    def __init__(
+        self, dns: str, name: str, model: str, driver_name: str, driver_inf_path: str
+    ):
         self.dns = dns
         self.name = name
         self.model = model

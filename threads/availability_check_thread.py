@@ -3,8 +3,10 @@
 from PySide6.QtCore import QThread, Signal
 from models.printer import Printer
 
+
 class AvailabilityCheckThread(QThread):
     """Prüft die Verfügbarkeit eines Druckers in einem separaten Thread."""
+
     availability_check_finished = Signal(bool)
 
     def __init__(self, printer: Printer):

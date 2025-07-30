@@ -3,6 +3,7 @@
 from typing import List, Dict, Any
 from .printer import Printer
 
+
 class Location:
     def __init__(self, name: str, printers: List[Printer] = None):
         self.name = name
@@ -20,7 +21,9 @@ class Location:
         if not self.get_printer_by_dns(printer.dns):
             self.printers.append(printer)
         else:
-            raise ValueError(f"Ein Drucker mit dem DNS-Namen {printer.dns} existiert bereits an diesem Standort.")
+            raise ValueError(
+                f"Ein Drucker mit dem DNS-Namen {printer.dns} existiert bereits an diesem Standort."
+            )
 
     def remove_printer(self, dns: str):
         """Entfernt einen Drucker anhand seines DNS-Namens."""
@@ -28,13 +31,15 @@ class Location:
         if printer_to_remove:
             self.printers.remove(printer_to_remove)
         else:
-            raise ValueError(f"Drucker mit DNS {dns} nicht an diesem Standort gefunden.")
+            raise ValueError(
+                f"Drucker mit DNS {dns} nicht an diesem Standort gefunden."
+            )
 
     def to_dict(self) -> Dict[str, Any]:
         """Serialisiert das Objekt und seine Drucker in ein Dictionary."""
         return {
             "name": self.name,
-            "printers": [printer.to_dict() for printer in self.printers]
+            "printers": [printer.to_dict() for printer in self.printers],
         }
 
     @classmethod

@@ -6,5 +6,5 @@ build/
 *.spec
 *.bak
 *.bat
-*.INF
+treiber/
 *.ps1

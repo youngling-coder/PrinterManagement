@@ -32,16 +32,17 @@ class InstallerThread(QThread):
                 f'cscript "C:\\Windows\\System32\\Printing_Admin_Scripts\\de-DE\\prnport.vbs" '
                 f"-a -r {port_name} -h {self.__printer.dns} -o raw -n 9100"
             ),
-            (f'pnputil /add-driver "{os.path.join(os.getcwd(), self.__printer.driver_inf_path)}" /install'),
+            (f'pnputil /add-driver "{os.path.join(os.getcwd(), "treiber", self.__printer.driver_inf_path)}" /install'),
             (
                 f'rundll32 printui.dll,PrintUIEntry /if /b "{self.__printer.name}" /r "{port_name}" '
-                f'/f "{os.path.join(os.getcwd(), self.__printer.driver_inf_path)}" /m "{self.__printer.driver_name}" /z'
+                f'/f "{os.path.join(os.getcwd(), "treiber", self.__printer.driver_inf_path)}" /m "{self.__printer.driver_name}" /z'
             ),
         ]
 
     def run(self) -> None:
         """Führt die Installationsschritte nacheinander aus."""
         try:
+            print(os.path.join(os.getcwd(), "treiber", self.__printer.driver_inf_path))
             for cmd in self.__commands:
                 self.__run_command(cmd)
                 self.step_finished.emit()

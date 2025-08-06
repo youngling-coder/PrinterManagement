@@ -12,6 +12,8 @@ from services.printer_service import (
 from models.printer import Printer
 from threads.installer_thread import InstallerThread
 from threads.availability_check_thread import AvailabilityCheckThread
+from threads.load_installed_printers_thread import LoadInstalledPrintersThread
+from threads.delete_installed_printer_thread import UninstallPrinterThread
 import webbrowser
 
 
@@ -23,7 +25,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.current_printer: Printer | None = None
         self.current_item: QTreeWidgetItem | None = None
 
-        self._worker_thread = None  # Generischer Thread für Hintergrundaufgaben
+        self._check_availability_thread = None
+        self._load_installed_printers_thread = None
+        self._uninstall_printer_thread = None
+        self._installer_thread = None
 
         self._connect_signals()
         self.load_storage_to_gui()
@@ -32,13 +37,62 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.createItemComboBox.textActivated.connect(self.on_create_item)
         self.printersTreeWidget.currentItemChanged.connect(self.on_item_changed)
         self.deleteItemButton.clicked.connect(self.on_delete_item)
-        self.installPrinterButton.clicked.connect(self.on_install_printer)
+        self.installPrinterButton.clicked.connect(self.on_printer_install)
         self.editPrinterButton.clicked.connect(self.on_edit_item)
         self.searchEdit.textChanged.connect(self.on_search)
-        self.actionDocumentation.triggered.connect(self.on_documentation_load)
+        self.openDocumentationAction.triggered.connect(self.on_documentation_load)
+        self.tabWidget.currentChanged.connect(self.on_installed_printers_refresh)
+        self.installedPrintersRefreshButton.clicked.connect(self.on_installed_printers_refresh)
+        self.uninstallPrinterButton.clicked.connect(self.on_printer_uninstall)
+
+    def on_printer_uninsFtalled(self, printer_name: str):
+        QMessageBox.information(
+            self, 
+            "Erfolg!",
+            f"Drucker mit dem Namen '{printer_name}' wurde erfolgreich deinstalliert!"
+        )
+        self.on_installed_printers_refresh()
+        self.uninstallPrinterButton.setEnabled(True)
+
+    def on_printer_uninstall_failed(self, error):
+        QMessageBox.critical(
+            self, 
+            "Fehler!",
+            error
+        )
+        self.uninstallPrinterButton.setEnabled(True)
+
+    def on_printer_uninstall(self):
+
+        if self.installedPrintersListWidget.currentItem():
+
+            self.uninstallPrinterButton.setEnabled(False)
+            printer_name = self.installedPrintersListWidget.currentItem().text()
+
+            if self._uninstall_printer_thread:
+                self._uninstall_printer_thread.terminate()
+
+            self._uninstall_printer_thread = UninstallPrinterThread(printer_name)
+            self._uninstall_printer_thread.printer_uninstalled.connect(self.on_printer_uninstalled)
+            self._uninstall_printer_thread.printer_uninstall_failed.connect(self.on_printer_uninstall_failed)
+            self._uninstall_printer_thread.start()
+
+    def on_printer_found(self, printer: str):
+        self.installedPrintersListWidget.addItem(printer)
+
+    def on_installed_printers_refresh(self):
+        self.installedPrintersListWidget.clear()
+        if self.tabWidget.currentWidget().objectName() == "installedTab":
+
+            if self._load_installed_printers_thread:
+                self._load_installed_printers_thread.terminate()
+
+            self._load_installed_printers_thread = LoadInstalledPrintersThread()
+            self._load_installed_printers_thread.printer_found.connect(self.on_printer_found)
+            self._load_installed_printers_thread.start()
 
     def on_documentation_load(self):
-        webbrowser.open_new_tab("https://google.com/")
+        webbrowser.open("https://google.com/")
 
     def load_storage_to_gui(self):
         self.printersTreeWidget.clear()
@@ -55,17 +109,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.statusbar.showMessage("Daten erfolgreich geladen.", 3000)
 
     def on_item_changed(self, current: QTreeWidgetItem):
-        self.installPrinterButton.setEnabled(False)
-        self.editPrinterButton.setEnabled(False)
         self.current_item = current
         self.current_printer = None
 
-        if not current or current.parent() is None:  # Es ist ein Standort oder nichts
+        if not current or current.parent() is None:
+            self.installPrinterButton.setEnabled(False)
+            self.editPrinterButton.setEnabled(False)
             self.clear_printer_details()
             return
 
         # Es ist ein Drucker
-        self.editPrinterButton.setEnabled(True)
         printer_dns = current.data(1, 0)
         result = self.service.get_printer_by_dns(printer_dns)
         if not result:
@@ -98,21 +151,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.availableLabel.setStyleSheet("")
 
     def check_printer_availability(self, printer: Printer):
-        if self._worker_thread and self._worker_thread.isRunning():
-            self._worker_thread.terminate()
+        if self._check_availability_thread and self._check_availability_thread.isRunning():
+            self._check_availability_thread.terminate()
 
-        self._worker_thread = AvailabilityCheckThread(printer)
-        self._worker_thread.availability_check_finished.connect(
+        self._check_availability_thread = AvailabilityCheckThread(printer)
+        self._check_availability_thread.availability_check_finished.connect(
             self.on_availability_checked
         )
-        self._worker_thread.start()
+        self._check_availability_thread.start()
 
     def on_availability_checked(self, is_available: bool):
         color = "lightgreen" if is_available else "salmon"
         self.availableLabel.setText("JA" if is_available else "NEIN")
         self.availableLabel.setStyleSheet(f"color: {color}; font-weight: bold;")
         if self.current_printer:
-            self.installPrinterButton.setEnabled(is_available)
+            if self._installer_thread:
+                self.installPrinterButton.setEnabled(is_available and self._installer_thread.isFinished())
+            else:
+                self.installPrinterButton.setEnabled(is_available)
 
     def on_create_item(self, item_type: str):
         if item_type == "Drucker":
@@ -191,7 +247,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             except (LocationNotEmptyError, ItemNotFoundError) as e:
                 QMessageBox.critical(self, "Fehler", str(e))
 
-    def on_install_printer(self):
+    def on_printer_install(self):
         if not self.current_printer or not self.current_printer.is_available():
             QMessageBox.warning(
                 self,
@@ -199,18 +255,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 "Kein installierbarer Drucker ausgewählt oder Drucker nicht erreichbar.",
             )
             return
-
+        
+        self.installPrinterButton.setEnabled(False)
+        self.editPrinterButton.setEnabled(False)
+        self.deleteItemButton.setEnabled(False)
         self.progressBar.setValue(0)
         self.progressBar.setMaximum(3)
         self.progressBar.setFormat("[Schritt 0/3] Installation wird vorbereitet...")
 
-        self.installer_thread = InstallerThread(self.current_printer)
-        self.installer_thread.step_finished.connect(self.on_installation_step)
-        self.installer_thread.installation_finished.connect(
+        self._installer_thread = InstallerThread(self.current_printer)
+        self._installer_thread.step_finished.connect(self.on_installation_step)
+        self._installer_thread.installation_finished.connect(
             self.on_installation_finished
         )
-        self.installer_thread.installation_failed.connect(self.on_installation_failed)
-        self.installer_thread.start()
+        self._installer_thread.installation_failed.connect(self.on_installation_failed)
+        self._installer_thread.start()
 
     def on_installation_step(self):
         value = self.progressBar.value() + 1
@@ -220,10 +279,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def on_installation_finished(self, message):
         self.progressBar.setFormat(message)
         QMessageBox.information(self, "Erfolg", message)
+        self.installPrinterButton.setEnabled(True)
+        self.editPrinterButton.setEnabled(True)
+        self.deleteItemButton.setEnabled(True)
 
     def on_installation_failed(self, error_message):
         self.progressBar.setFormat(f"Fehler: {error_message}")
         QMessageBox.critical(self, "Installationsfehler", error_message)
+        self.installPrinterButton.setEnabled(True)
+        self.editPrinterButton.setEnabled(True)
+        self.deleteItemButton.setEnabled(True)
 
     def on_search(self, text: str):
         # Einfache Suche, die alle Items durchgeht
@@ -248,6 +313,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def closeEvent(self, event):
         # Sicherstellen, dass alle Threads beendet werden
-        if self._worker_thread and self._worker_thread.isRunning():
-            self._worker_thread.terminate()
+        if self._check_availability_thread and self._check_availability_thread.isRunning():
+            self._check_availability_thread.terminate()
         super().closeEvent(event)

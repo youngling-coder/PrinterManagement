@@ -1,6 +1,7 @@
 colorama
 black
 pyinstaller
-flask
 prettytable
 pyside6
+pywin32
+wmi

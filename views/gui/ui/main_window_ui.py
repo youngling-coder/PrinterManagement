@@ -17,35 +17,34 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QGridLayout, QHBoxLayout,
-    QHeaderView, QLabel, QLineEdit, QMainWindow,
-    QMenu, QMenuBar, QProgressBar, QPushButton,
-    QScrollArea, QSizePolicy, QSpacerItem, QStatusBar,
-    QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget)
+    QHeaderView, QLabel, QLineEdit, QListWidget,
+    QListWidgetItem, QMainWindow, QMenu, QMenuBar,
+    QProgressBar, QPushButton, QScrollArea, QSizePolicy,
+    QSpacerItem, QStatusBar, QTabWidget, QTreeWidget,
+    QTreeWidgetItem, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(719, 555)
-        self.actionDocumentation = QAction(MainWindow)
-        self.actionDocumentation.setObjectName(u"actionDocumentation")
-        self.saveAction = QAction(MainWindow)
-        self.saveAction.setObjectName(u"saveAction")
-        self.saveAsAction = QAction(MainWindow)
-        self.saveAsAction.setObjectName(u"saveAsAction")
-        self.saveAndCloseAction = QAction(MainWindow)
-        self.saveAndCloseAction.setObjectName(u"saveAndCloseAction")
-        self.openAction = QAction(MainWindow)
-        self.openAction.setObjectName(u"openAction")
+        self.openDocumentationAction = QAction(MainWindow)
+        self.openDocumentationAction.setObjectName(u"openDocumentationAction")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.verticalLayout_3 = QVBoxLayout(self.centralwidget)
+        self.verticalLayout_5 = QVBoxLayout(self.centralwidget)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.tabWidget = QTabWidget(self.centralwidget)
+        self.tabWidget.setObjectName(u"tabWidget")
+        self.verwaltungTab = QWidget()
+        self.verwaltungTab.setObjectName(u"verwaltungTab")
+        self.verticalLayout_3 = QVBoxLayout(self.verwaltungTab)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.horizontalLayout_4 = QHBoxLayout()
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.searchEdit = QLineEdit(self.centralwidget)
+        self.searchEdit = QLineEdit(self.verwaltungTab)
         self.searchEdit.setObjectName(u"searchEdit")
         sizePolicy = QSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -55,7 +54,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addWidget(self.searchEdit)
 
-        self.printersTreeWidget = QTreeWidget(self.centralwidget)
+        self.printersTreeWidget = QTreeWidget(self.verwaltungTab)
         self.printersTreeWidget.setObjectName(u"printersTreeWidget")
 
         self.verticalLayout_2.addWidget(self.printersTreeWidget)
@@ -64,7 +63,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.deleteItemButton = QPushButton(self.centralwidget)
+        self.deleteItemButton = QPushButton(self.verwaltungTab)
         self.deleteItemButton.setObjectName(u"deleteItemButton")
 
         self.horizontalLayout.addWidget(self.deleteItemButton)
@@ -76,12 +75,12 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer)
 
-        self.editPrinterButton = QPushButton(self.centralwidget)
+        self.editPrinterButton = QPushButton(self.verwaltungTab)
         self.editPrinterButton.setObjectName(u"editPrinterButton")
 
         self.horizontalLayout_2.addWidget(self.editPrinterButton)
 
-        self.createItemComboBox = QComboBox(self.centralwidget)
+        self.createItemComboBox = QComboBox(self.verwaltungTab)
         self.createItemComboBox.addItem("")
         self.createItemComboBox.addItem("")
         self.createItemComboBox.addItem("")
@@ -95,14 +94,14 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_4.addLayout(self.verticalLayout_2)
 
-        self.scrollArea = QScrollArea(self.centralwidget)
+        self.scrollArea = QScrollArea(self.verwaltungTab)
         self.scrollArea.setObjectName(u"scrollArea")
         self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 275, 447))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 266, 400))
         self.verticalLayout = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.gridLayout = QGridLayout()
@@ -245,7 +244,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.progressBar = QProgressBar(self.centralwidget)
+        self.progressBar = QProgressBar(self.verwaltungTab)
         self.progressBar.setObjectName(u"progressBar")
         sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Maximum)
         sizePolicy3.setHorizontalStretch(0)
@@ -260,7 +259,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_3.addWidget(self.progressBar)
 
-        self.installPrinterButton = QPushButton(self.centralwidget)
+        self.installPrinterButton = QPushButton(self.verwaltungTab)
         self.installPrinterButton.setObjectName(u"installPrinterButton")
         sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Maximum)
         sizePolicy4.setHorizontalStretch(0)
@@ -273,42 +272,66 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_3)
 
+        self.tabWidget.addTab(self.verwaltungTab, "")
+        self.installedTab = QWidget()
+        self.installedTab.setObjectName(u"installedTab")
+        self.verticalLayout_4 = QVBoxLayout(self.installedTab)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.installedPrintersListWidget = QListWidget(self.installedTab)
+        self.installedPrintersListWidget.setObjectName(u"installedPrintersListWidget")
+
+        self.verticalLayout_4.addWidget(self.installedPrintersListWidget)
+
+        self.horizontalLayout_5 = QHBoxLayout()
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.uninstallPrinterButton = QPushButton(self.installedTab)
+        self.uninstallPrinterButton.setObjectName(u"uninstallPrinterButton")
+
+        self.horizontalLayout_5.addWidget(self.uninstallPrinterButton)
+
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_5.addItem(self.horizontalSpacer_2)
+
+        self.installedPrintersRefreshButton = QPushButton(self.installedTab)
+        self.installedPrintersRefreshButton.setObjectName(u"installedPrintersRefreshButton")
+
+        self.horizontalLayout_5.addWidget(self.installedPrintersRefreshButton)
+
+
+        self.verticalLayout_4.addLayout(self.horizontalLayout_5)
+
+        self.tabWidget.addTab(self.installedTab, "")
+
+        self.verticalLayout_5.addWidget(self.tabWidget)
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
         self.menubar.setGeometry(QRect(0, 0, 719, 33))
-        self.menuHilfe = QMenu(self.menubar)
-        self.menuHilfe.setObjectName(u"menuHilfe")
+        self.menuHelp = QMenu(self.menubar)
+        self.menuHelp.setObjectName(u"menuHelp")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
-        self.menubar.addAction(self.menuHilfe.menuAction())
+        self.menubar.addAction(self.menuHelp.menuAction())
+        self.menuHelp.addAction(self.openDocumentationAction)
 
         self.retranslateUi(MainWindow)
+
+        self.tabWidget.setCurrentIndex(1)
+
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Drucker Verwaltung", None))
-        self.actionDocumentation.setText(QCoreApplication.translate("MainWindow", u"Doku \u00f6ffnen", None))
-        self.saveAction.setText(QCoreApplication.translate("MainWindow", u"Speichern", None))
+        self.openDocumentationAction.setText(QCoreApplication.translate("MainWindow", u"Dokumentation \u00f6ffnen", None))
 #if QT_CONFIG(shortcut)
-        self.saveAction.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+S", None))
-#endif // QT_CONFIG(shortcut)
-        self.saveAsAction.setText(QCoreApplication.translate("MainWindow", u"Speichern als", None))
-#if QT_CONFIG(shortcut)
-        self.saveAsAction.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+Shift+S", None))
-#endif // QT_CONFIG(shortcut)
-        self.saveAndCloseAction.setText(QCoreApplication.translate("MainWindow", u"Speichern und Beenden", None))
-#if QT_CONFIG(shortcut)
-        self.saveAndCloseAction.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+Q", None))
-#endif // QT_CONFIG(shortcut)
-        self.openAction.setText(QCoreApplication.translate("MainWindow", u"\u00d6ffnen", None))
-#if QT_CONFIG(shortcut)
-        self.openAction.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+O", None))
+        self.openDocumentationAction.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+H", None))
 #endif // QT_CONFIG(shortcut)
         self.searchEdit.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Geben Sie den Druckernamen ein...", None))
         ___qtreewidgetitem = self.printersTreeWidget.headerItem()
@@ -344,6 +367,13 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(shortcut)
         self.installPrinterButton.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+I", None))
 #endif // QT_CONFIG(shortcut)
-        self.menuHilfe.setTitle(QCoreApplication.translate("MainWindow", u"Hilfe", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.verwaltungTab), QCoreApplication.translate("MainWindow", u"Druckerverwaltung", None))
+        self.uninstallPrinterButton.setText(QCoreApplication.translate("MainWindow", u"Deinstallieren", None))
+        self.installedPrintersRefreshButton.setText(QCoreApplication.translate("MainWindow", u"Aktualisieren", None))
+#if QT_CONFIG(shortcut)
+        self.installedPrintersRefreshButton.setShortcut(QCoreApplication.translate("MainWindow", u"F5", None))
+#endif // QT_CONFIG(shortcut)
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.installedTab), QCoreApplication.translate("MainWindow", u"Installierte Drucker", None))
+        self.menuHelp.setTitle(QCoreApplication.translate("MainWindow", u"Hilfe", None))
     # retranslateUi
 

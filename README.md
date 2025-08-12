@@ -1,102 +1,95 @@
-# Anwendngsdokumentation: Drucker Verwaltung
+# Drucker-Verwaltung – Benutzerhandbuch
 
-Dieses Program dient zur zentralen Verwaltung und Installation von Netzwerkdruckern. Es speichert alle konfigurationen in einer lokalen printers.json Datei und bietet zwei Betriebsmodi: eine graphische Benutzeroberfläche für intuitive Bedienung und ein Kommandozeilen-Interface für schnelle, skriptgesteurerte Aufgaben.
+## Überblick
 
-**Wichtiger Hinweis:** Die Installation von Druckertreibern erfordert administrative Rechte.
+**Drucker-Verwaltung** ist eine Windows-Anwendung zur zentralen Verwaltung und Installation von Netzwerkdruckern. Sie bietet eine grafische Oberfläche, mit der Sie Drucker und Standorte komfortabel anlegen, bearbeiten, installieren und entfernen können.
 
-## 1. Grafische Benutzeroberfläche
-Die GUI bietet eine visuelle und interaktive Methode zur Verwaltung Ihrer Drucker.
+---
 
-### 1.1 Starten der Anwendung
-Führen Sie die  `DruckerVerwaltungGUI.exe` aus. Es öffnet sich das Hauptfenster der Anwendung.
+## Wichtiger Hinweis: Administrative Rechte
 
-### 1.2 Das Hauptfenster
-Das Hauptfenster ist in drei Hauptvereiche unterteilt:
+Für die Installation und Deinstallation von Druckern und Treibern sind Administratorrechte erforderlich. Starten Sie die Anwendung mit „Als Administrator ausführen“, um alle Funktionen nutzen zu können.
 
-1. **Druckerübersicht (links)**
-- Eine Baumansicht, die alle Drucker nach Standorte gruppiert anzeigt
-- Standorte sind die Haupteinträge
-- Über dem Baum befindet sich ein Suchfeld, mit dem Sie die Liste filtern können
+---
 
-2. **Detailansicht (rechts)**
-- Zeigt detaillierte Informationen über den in der Übersicht ausgewählten Drucker an
-- Wenn ein Standort oder kein Element ausgewählt ist, werden hier keine spezifischen Daten angezeigt
+## 1. Hauptfenster und Bedienung
 
-3. **Aktionsleiste (unten)**
-- Forschrittsbalken: Zeigt den Status einer laufenden Druckerinstallation an
-- Button "Installieren": Startet den Installationsvorgangfür den ausgewählten und verfügbaren Drucker
-- Unter links befinden sich die Buttons "Löschen" und "Bearbeiten"
-- Unter rechts befindet sich das Dropdown-Menü "Erstellen neunen...", um neue Drucker oder Standorte anzulegen
+Das Hauptfenster gliedert sich in drei Bereiche:
 
-### 1.3 Standorte Verwalten
+- **Druckerübersicht (links):**  
+  Zeigt alle Drucker nach Standorten gruppiert in einer Baumstruktur. Ein Suchfeld ermöglicht das schnelle Filtern nach Namen, Standort oder DNS/IP.
 
-#### Einen neuen Standort erstellen
-1. Auf das Dropdown-Menü **"Erstellen neuen..."** unten rechts klicken
-2. Option **"Standort"** wählen
-3. Den gewünschten Namen für den neuen Standort eingeben
-4. Auf **"Erstellen"** klicken. Der neue Standort erscheint sofort in der Druckerübersicht
+- **Detailansicht (rechts):**  
+  Zeigt die Details des ausgewählten Druckers: Modell, Treibername, Treiberpfad, DNS/IP und Standort. Die Verfügbarkeitsprüfung zeigt, ob der Drucker im Netzwerk erreichbar ist.
 
-#### Einen Standort löschen
+- **Aktionsleiste (unten):**  
+  Enthält Schaltflächen für:
+  - **Erstellen:** Dropdown für neuen Standort oder Drucker.
+  - **Bearbeiten & Löschen:** Ändern oder Entfernen des ausgewählten Eintrags.
+  - **Installieren:** Startet die Installation eines verfügbaren Druckers.
+  - **Fortschrittsbalken:** Zeigt den Status laufendes Prozesses.
 
-**Achtung:** Ein Standort kann nur gelöscht werden, wenn ihm keine Drucker mehr zugeordnet sind.
+---
 
-1. Den zu löschenden Standort in der Druckerübersicht auswählen
-2. Auf den Button **"Löschen"** unten links
-3. Die Sicherheitsabfrage bestätigen
+## 2. Standorte und Drucker verwalten
 
+### Standort anlegen
 
-### 1.4 Drucker verwalten
+1. Klicken Sie auf „Erstellen...“ und wählen Sie „Standort“.
+2. Geben Sie den Namen ein und bestätigen Sie mit „Erstellen“. Der Standort erscheint nun in der Druckerübersicht.
 
-#### Einen neuen Drucker hinzufügen
+### Drucker hinzufügen
 
-1. Auf das Dropdown-Menü **"Erstellen neuen..."** klicken und **Drucker** wählen
-2. Die folgenden Felder ausfüllen
-- **Standard:** Aus der Dropdown-Liste den Standort, an dem der Drucker hinzugefügt werden soll, auswählen. (Falls die Liste leer ist, müssen Sie zuerst einen Standort erstellen)
-- **Druckername:** Ein fre wählbarer Name, der in der Übersicht angezeigt wird. 
-- **Druckermodell:** Das genaue Modell des Druckers
-- **DNS-Name:** Der vollqualifizierte DNS-Name des Druckers im Netzwerk. (Kann auch eine IP-Adresse sein, aber **NICHT** empfohlen!)
-- **Treibername:** Der exakte Name des Treibers, wie er in der .inf-Datei definiert ist (Standard: Canon Generic PCL6 Driver)
-- **Treiberpfad:** Der Pfad zur .inf-Datei des Treibers. **Bitte den Pfad manuell nicht eingeben.** In dieses Feld klicken, um einen Dateiauswahldialog zu öffnen und zur richtigen .inf-Datei zu navigieren. (Standard: CNP60MA64.INF, **Bitte nicht ändern ohne Bedarf**)
-4. Auf **"Erstellen"** klicken. Der Drucker wird dem gewählten Standort hinzugefügt.
+1. Wählen Sie „Erstellen...“ → „Drucker“.
+2. Füllen Sie die Felder aus:
+   - **Standort:** Auswahl aus bestehenden Standorten.
+   - **Druckername:** Frei wählbar.
+   - **Modell:** Hersteller/Modellbezeichnung.
+   - **DNS/IP:** Netzwerkadresse des Druckers.
+   - **Treibername:** Exakter Name aus der INF-Datei.
+   - **Treiberpfad:** Klicken Sie ins Feld, um die `.inf`-Datei per Dialog auszuwählen (keine manuelle Eingabe).
+3. Klicken Sie auf „Erstellen“, um den Drucker hinzuzufügen.
 
-#### Einen Drucker bearbeiten
+### Bearbeiten und Löschen
 
-1. Den zu bearbeitenden Drucker in der Übersicht auswählen
-2. Auf den Button **"Bearbeiten"** Klicken
-3. Die gewünschten Informationen ändern. Beachten Sie, dass der Standort nachträglich nicht geändert werden kann
-4. Auf **"Übernehmen"** klicken, um Änderungen zu speichern
+- Wählen Sie einen Eintrag aus und klicken Sie auf „Bearbeiten“ (Standort eines Druckers ist nachträglich nicht änderbar) oder „Löschen“.
+- Standorte können nur gelöscht werden, wenn ihnen keine Drucker zugeordnet sind.
 
-#### Einen Drucker löschen
+---
 
-1. Den zu löschenden Drucker in der Übersicht auswählen
-2. Auf den Button **"Löschen"** klicken
-3. Die Sicherheitsabfrage bestätigen
+## 3. Drucker installieren
 
-#### Druckerdetails und Verfügbarkeit prüfen
-
-Wenn Sie einen Drucker in der Übersicht auswählen, werden seine Daten im rechten Detailbereich angezeigt. Die Anwendung führt automatisch eime Netzwerkprüfung durch:
-
-- **PRÜFUNG LÄUFT...:** Die Anwendung versucht, den Drucker im Netzwerk zu erreichen
-- **JA:** Der Drucker ist über das Netzwerk erreichbar. Der "Installieren"-Button wird aktiviert.
-- **NEIN:** Der Drucker konnte nicht erreicht werden. Prüfen Sie die DNS/IP-Addresse und die Netzwerkverbindung. Prüfen Sie auch, ob der Drucker im aktuellen Netzwerk hinzugefügt wurde. Der "Installieren"-Button bleibt deaktiviert.
-
-### 1.5 Einen Drucker installieren
-
-1. Einen Drucker in der Übersicht auswählen
-2. Sicherstellen, dass der Drucker Verfügbar ist (Verfügbar: JA)
-3. Auf **"Installieren"** button klicken
-4. Der Installationsprozess startet. Der Fortschrittsbalken zeigt die einzelnen Schritte an
-- [Schritt 1/3]: Erstellt den TCP/IP-Port
-- [Schritt 2/3]: Installiert den Druckertreiber im System
-- [Schritt 3/3]: Erstellt die Druckerinstanz und verknüpft sie mit Port und Treiber
+1. Wählen Sie einen Drucker in der Übersicht aus.
+2. Prüfen Sie die Verfügbarkeit in der Detailansicht:
+   - **JA (grün):** Drucker ist erreichbar, Installation möglich.
+   - **NEIN (rot):** Drucker nicht erreichbar – prüfen Sie Netzwerk, Strom und DNS/IP.
+3. Klicken Sie auf „Installieren“.
+4. Der Fortschrittsbalken zeigt die drei Installationsschritte:
+   1. TCP/IP-Port wird erstellt.
+   2. Treiber wird registriert.
+   3. Druckerinstanz wird angelegt und verknüpft.
 5. Nach Abschluss erhalten Sie eine Erfolgs- oder Fehlermeldung.
 
-### 1.6 Suchen und Filtern
+---
 
-Geben Sie einen Suchbegriff in das Suchfeld über der Druckerübersicht ein. Die Liste wird in Echtzeit gefiltert und zeigt nur noch Standorte und Drucker an, die den Suchbegriff im namen entahlten.
+## 4. Installierte Drucker verwalten
 
+- Im Tab „Installierte Drucker“ sehen Sie alle lokal und im Netzwerk installierten Drucker.
+- Mit „Aktualisieren“ laden Sie die Liste neu.
+- Zur Deinstallation eines Druckers:
+  1. Wählen Sie den Drucker aus.
+  2. Klicken Sie auf „Deinstallieren“.
+  3. Nach erfolgreicher Deinstallation erscheint eine Bestätigung, bei Fehlern eine entsprechende Meldung.
 
-## 2. Kommandozeilen-Interface 
+---
 
-### 2.1 Starten der Anwendung
-Führen Sie die `DruckerVerwaltungCLI.exe`. Es öffnet sich das Hauptfenster der Anwendung.
+## Hilfe und Dokumentation
+
+- Über das Menü „Hilfe“ können Sie die Online-Dokumentation direkt öffnen (`Strg+H`).
+
+---
+
+## Hinweise
+
+- Die Anwendung prüft die Druckerverfügbarkeit automatisch und zeigt den Status in Echtzeit an.
+- Für alle systemnahen Aktionen (Installation/Deinstallation) sind Administratorrechte erforderlich.

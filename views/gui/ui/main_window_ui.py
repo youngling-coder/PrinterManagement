@@ -34,16 +34,14 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout_5 = QVBoxLayout(self.centralwidget)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.horizontalLayout_6 = QHBoxLayout()
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
         self.tabWidget = QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
         self.verwaltungTab = QWidget()
         self.verwaltungTab.setObjectName(u"verwaltungTab")
         self.verticalLayout_3 = QVBoxLayout(self.verwaltungTab)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.horizontalLayout_4 = QHBoxLayout()
-        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.verticalLayout_2 = QVBoxLayout()
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.searchEdit = QLineEdit(self.verwaltungTab)
         self.searchEdit.setObjectName(u"searchEdit")
         sizePolicy = QSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.Fixed)
@@ -52,8 +50,12 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.searchEdit.sizePolicy().hasHeightForWidth())
         self.searchEdit.setSizePolicy(sizePolicy)
 
-        self.verticalLayout_2.addWidget(self.searchEdit)
+        self.verticalLayout_3.addWidget(self.searchEdit)
 
+        self.horizontalLayout_4 = QHBoxLayout()
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.verticalLayout_2 = QVBoxLayout()
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.printersTreeWidget = QTreeWidget(self.verwaltungTab)
         self.printersTreeWidget.setObjectName(u"printersTreeWidget")
 
@@ -94,178 +96,19 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_4.addLayout(self.verticalLayout_2)
 
-        self.scrollArea = QScrollArea(self.verwaltungTab)
-        self.scrollArea.setObjectName(u"scrollArea")
-        self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
-        self.scrollArea.setWidgetResizable(True)
-        self.scrollAreaWidgetContents = QWidget()
-        self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 266, 400))
-        self.verticalLayout = QVBoxLayout(self.scrollAreaWidgetContents)
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.gridLayout = QGridLayout()
-        self.gridLayout.setObjectName(u"gridLayout")
-        self.label_6 = QLabel(self.scrollAreaWidgetContents)
-        self.label_6.setObjectName(u"label_6")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Preferred)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.label_6.sizePolicy().hasHeightForWidth())
-        self.label_6.setSizePolicy(sizePolicy1)
-        font = QFont()
-        font.setBold(True)
-        self.label_6.setFont(font)
-
-        self.gridLayout.addWidget(self.label_6, 6, 0, 1, 1)
-
-        self.driverPathLabel = QLabel(self.scrollAreaWidgetContents)
-        self.driverPathLabel.setObjectName(u"driverPathLabel")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.Preferred)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.driverPathLabel.sizePolicy().hasHeightForWidth())
-        self.driverPathLabel.setSizePolicy(sizePolicy2)
-        font1 = QFont()
-        font1.setBold(False)
-        self.driverPathLabel.setFont(font1)
-
-        self.gridLayout.addWidget(self.driverPathLabel, 5, 1, 1, 1)
-
-        self.availableLabel = QLabel(self.scrollAreaWidgetContents)
-        self.availableLabel.setObjectName(u"availableLabel")
-        self.availableLabel.setFont(font)
-
-        self.gridLayout.addWidget(self.availableLabel, 6, 1, 1, 1)
-
-        self.locationLabel = QLabel(self.scrollAreaWidgetContents)
-        self.locationLabel.setObjectName(u"locationLabel")
-        sizePolicy2.setHeightForWidth(self.locationLabel.sizePolicy().hasHeightForWidth())
-        self.locationLabel.setSizePolicy(sizePolicy2)
-        self.locationLabel.setFont(font1)
-
-        self.gridLayout.addWidget(self.locationLabel, 0, 1, 1, 1)
-
-        self.label_4 = QLabel(self.scrollAreaWidgetContents)
-        self.label_4.setObjectName(u"label_4")
-        sizePolicy1.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
-        self.label_4.setSizePolicy(sizePolicy1)
-        self.label_4.setFont(font)
-
-        self.gridLayout.addWidget(self.label_4, 0, 0, 1, 1)
-
-        self.label_5 = QLabel(self.scrollAreaWidgetContents)
-        self.label_5.setObjectName(u"label_5")
-        sizePolicy1.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
-        self.label_5.setSizePolicy(sizePolicy1)
-        self.label_5.setFont(font)
-
-        self.gridLayout.addWidget(self.label_5, 4, 0, 1, 1)
-
-        self.label_3 = QLabel(self.scrollAreaWidgetContents)
-        self.label_3.setObjectName(u"label_3")
-        sizePolicy1.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
-        self.label_3.setSizePolicy(sizePolicy1)
-        self.label_3.setFont(font)
-
-        self.gridLayout.addWidget(self.label_3, 2, 0, 1, 1)
-
-        self.label_2 = QLabel(self.scrollAreaWidgetContents)
-        self.label_2.setObjectName(u"label_2")
-        sizePolicy1.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
-        self.label_2.setSizePolicy(sizePolicy1)
-        self.label_2.setFont(font)
-
-        self.gridLayout.addWidget(self.label_2, 5, 0, 1, 1)
-
-        self.label = QLabel(self.scrollAreaWidgetContents)
-        self.label.setObjectName(u"label")
-        sizePolicy1.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
-        self.label.setSizePolicy(sizePolicy1)
-        self.label.setFont(font)
-
-        self.gridLayout.addWidget(self.label, 1, 0, 1, 1)
-
-        self.DNSNameLabel = QLabel(self.scrollAreaWidgetContents)
-        self.DNSNameLabel.setObjectName(u"DNSNameLabel")
-        sizePolicy2.setHeightForWidth(self.DNSNameLabel.sizePolicy().hasHeightForWidth())
-        self.DNSNameLabel.setSizePolicy(sizePolicy2)
-        self.DNSNameLabel.setFont(font1)
-
-        self.gridLayout.addWidget(self.DNSNameLabel, 3, 1, 1, 1)
-
-        self.printerNameLabel = QLabel(self.scrollAreaWidgetContents)
-        self.printerNameLabel.setObjectName(u"printerNameLabel")
-        sizePolicy2.setHeightForWidth(self.printerNameLabel.sizePolicy().hasHeightForWidth())
-        self.printerNameLabel.setSizePolicy(sizePolicy2)
-        self.printerNameLabel.setFont(font1)
-
-        self.gridLayout.addWidget(self.printerNameLabel, 1, 1, 1, 1)
-
-        self.printerModelLabel = QLabel(self.scrollAreaWidgetContents)
-        self.printerModelLabel.setObjectName(u"printerModelLabel")
-        sizePolicy2.setHeightForWidth(self.printerModelLabel.sizePolicy().hasHeightForWidth())
-        self.printerModelLabel.setSizePolicy(sizePolicy2)
-        self.printerModelLabel.setFont(font1)
-
-        self.gridLayout.addWidget(self.printerModelLabel, 2, 1, 1, 1)
-
-        self.driverNameLabel = QLabel(self.scrollAreaWidgetContents)
-        self.driverNameLabel.setObjectName(u"driverNameLabel")
-        sizePolicy2.setHeightForWidth(self.driverNameLabel.sizePolicy().hasHeightForWidth())
-        self.driverNameLabel.setSizePolicy(sizePolicy2)
-        self.driverNameLabel.setFont(font1)
-
-        self.gridLayout.addWidget(self.driverNameLabel, 4, 1, 1, 1)
-
-        self.label_7 = QLabel(self.scrollAreaWidgetContents)
-        self.label_7.setObjectName(u"label_7")
-        sizePolicy1.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
-        self.label_7.setSizePolicy(sizePolicy1)
-        self.label_7.setFont(font)
-
-        self.gridLayout.addWidget(self.label_7, 3, 0, 1, 1)
-
-
-        self.verticalLayout.addLayout(self.gridLayout)
-
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.MinimumExpanding)
-
-        self.verticalLayout.addItem(self.verticalSpacer)
-
-        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-
-        self.horizontalLayout_4.addWidget(self.scrollArea)
-
         self.horizontalLayout_4.setStretch(0, 3)
-        self.horizontalLayout_4.setStretch(1, 2)
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_4)
 
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.progressBar = QProgressBar(self.verwaltungTab)
-        self.progressBar.setObjectName(u"progressBar")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Maximum)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.progressBar.sizePolicy().hasHeightForWidth())
-        self.progressBar.setSizePolicy(sizePolicy3)
-        self.progressBar.setValue(0)
-        self.progressBar.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignVCenter)
-        self.progressBar.setTextVisible(True)
-        self.progressBar.setOrientation(Qt.Orientation.Horizontal)
-        self.progressBar.setInvertedAppearance(False)
-
-        self.horizontalLayout_3.addWidget(self.progressBar)
-
         self.installPrinterButton = QPushButton(self.verwaltungTab)
         self.installPrinterButton.setObjectName(u"installPrinterButton")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Maximum)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.installPrinterButton.sizePolicy().hasHeightForWidth())
-        self.installPrinterButton.setSizePolicy(sizePolicy4)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Maximum)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.installPrinterButton.sizePolicy().hasHeightForWidth())
+        self.installPrinterButton.setSizePolicy(sizePolicy1)
 
         self.horizontalLayout_3.addWidget(self.installPrinterButton)
 
@@ -303,7 +146,170 @@ class Ui_MainWindow(object):
 
         self.tabWidget.addTab(self.installedTab, "")
 
-        self.verticalLayout_5.addWidget(self.tabWidget)
+        self.horizontalLayout_6.addWidget(self.tabWidget)
+
+        self.scrollArea = QScrollArea(self.centralwidget)
+        self.scrollArea.setObjectName(u"scrollArea")
+        self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollAreaWidgetContents = QWidget()
+        self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 229, 449))
+        self.verticalLayout = QVBoxLayout(self.scrollAreaWidgetContents)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.gridLayout = QGridLayout()
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.label_6 = QLabel(self.scrollAreaWidgetContents)
+        self.label_6.setObjectName(u"label_6")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Preferred)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.label_6.sizePolicy().hasHeightForWidth())
+        self.label_6.setSizePolicy(sizePolicy2)
+        font = QFont()
+        font.setBold(True)
+        self.label_6.setFont(font)
+
+        self.gridLayout.addWidget(self.label_6, 6, 0, 1, 1)
+
+        self.driverPathLabel = QLabel(self.scrollAreaWidgetContents)
+        self.driverPathLabel.setObjectName(u"driverPathLabel")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.Preferred)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.driverPathLabel.sizePolicy().hasHeightForWidth())
+        self.driverPathLabel.setSizePolicy(sizePolicy3)
+        font1 = QFont()
+        font1.setBold(False)
+        self.driverPathLabel.setFont(font1)
+
+        self.gridLayout.addWidget(self.driverPathLabel, 5, 1, 1, 1)
+
+        self.availableLabel = QLabel(self.scrollAreaWidgetContents)
+        self.availableLabel.setObjectName(u"availableLabel")
+        self.availableLabel.setFont(font)
+
+        self.gridLayout.addWidget(self.availableLabel, 6, 1, 1, 1)
+
+        self.locationLabel = QLabel(self.scrollAreaWidgetContents)
+        self.locationLabel.setObjectName(u"locationLabel")
+        sizePolicy3.setHeightForWidth(self.locationLabel.sizePolicy().hasHeightForWidth())
+        self.locationLabel.setSizePolicy(sizePolicy3)
+        self.locationLabel.setFont(font1)
+
+        self.gridLayout.addWidget(self.locationLabel, 0, 1, 1, 1)
+
+        self.label_4 = QLabel(self.scrollAreaWidgetContents)
+        self.label_4.setObjectName(u"label_4")
+        sizePolicy2.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
+        self.label_4.setSizePolicy(sizePolicy2)
+        self.label_4.setFont(font)
+
+        self.gridLayout.addWidget(self.label_4, 0, 0, 1, 1)
+
+        self.label_5 = QLabel(self.scrollAreaWidgetContents)
+        self.label_5.setObjectName(u"label_5")
+        sizePolicy2.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
+        self.label_5.setSizePolicy(sizePolicy2)
+        self.label_5.setFont(font)
+
+        self.gridLayout.addWidget(self.label_5, 4, 0, 1, 1)
+
+        self.label_3 = QLabel(self.scrollAreaWidgetContents)
+        self.label_3.setObjectName(u"label_3")
+        sizePolicy2.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
+        self.label_3.setSizePolicy(sizePolicy2)
+        self.label_3.setFont(font)
+
+        self.gridLayout.addWidget(self.label_3, 2, 0, 1, 1)
+
+        self.label_2 = QLabel(self.scrollAreaWidgetContents)
+        self.label_2.setObjectName(u"label_2")
+        sizePolicy2.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
+        self.label_2.setSizePolicy(sizePolicy2)
+        self.label_2.setFont(font)
+
+        self.gridLayout.addWidget(self.label_2, 5, 0, 1, 1)
+
+        self.label = QLabel(self.scrollAreaWidgetContents)
+        self.label.setObjectName(u"label")
+        sizePolicy2.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy2)
+        self.label.setFont(font)
+
+        self.gridLayout.addWidget(self.label, 1, 0, 1, 1)
+
+        self.DNSNameLabel = QLabel(self.scrollAreaWidgetContents)
+        self.DNSNameLabel.setObjectName(u"DNSNameLabel")
+        sizePolicy3.setHeightForWidth(self.DNSNameLabel.sizePolicy().hasHeightForWidth())
+        self.DNSNameLabel.setSizePolicy(sizePolicy3)
+        self.DNSNameLabel.setFont(font1)
+
+        self.gridLayout.addWidget(self.DNSNameLabel, 3, 1, 1, 1)
+
+        self.printerNameLabel = QLabel(self.scrollAreaWidgetContents)
+        self.printerNameLabel.setObjectName(u"printerNameLabel")
+        sizePolicy3.setHeightForWidth(self.printerNameLabel.sizePolicy().hasHeightForWidth())
+        self.printerNameLabel.setSizePolicy(sizePolicy3)
+        self.printerNameLabel.setFont(font1)
+
+        self.gridLayout.addWidget(self.printerNameLabel, 1, 1, 1, 1)
+
+        self.printerModelLabel = QLabel(self.scrollAreaWidgetContents)
+        self.printerModelLabel.setObjectName(u"printerModelLabel")
+        sizePolicy3.setHeightForWidth(self.printerModelLabel.sizePolicy().hasHeightForWidth())
+        self.printerModelLabel.setSizePolicy(sizePolicy3)
+        self.printerModelLabel.setFont(font1)
+
+        self.gridLayout.addWidget(self.printerModelLabel, 2, 1, 1, 1)
+
+        self.driverNameLabel = QLabel(self.scrollAreaWidgetContents)
+        self.driverNameLabel.setObjectName(u"driverNameLabel")
+        sizePolicy3.setHeightForWidth(self.driverNameLabel.sizePolicy().hasHeightForWidth())
+        self.driverNameLabel.setSizePolicy(sizePolicy3)
+        self.driverNameLabel.setFont(font1)
+
+        self.gridLayout.addWidget(self.driverNameLabel, 4, 1, 1, 1)
+
+        self.label_7 = QLabel(self.scrollAreaWidgetContents)
+        self.label_7.setObjectName(u"label_7")
+        sizePolicy2.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
+        self.label_7.setSizePolicy(sizePolicy2)
+        self.label_7.setFont(font)
+
+        self.gridLayout.addWidget(self.label_7, 3, 0, 1, 1)
+
+
+        self.verticalLayout.addLayout(self.gridLayout)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.MinimumExpanding)
+
+        self.verticalLayout.addItem(self.verticalSpacer)
+
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+
+        self.horizontalLayout_6.addWidget(self.scrollArea)
+
+        self.horizontalLayout_6.setStretch(0, 2)
+        self.horizontalLayout_6.setStretch(1, 1)
+
+        self.verticalLayout_5.addLayout(self.horizontalLayout_6)
+
+        self.progressBar = QProgressBar(self.centralwidget)
+        self.progressBar.setObjectName(u"progressBar")
+        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Maximum)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.progressBar.sizePolicy().hasHeightForWidth())
+        self.progressBar.setSizePolicy(sizePolicy4)
+        self.progressBar.setValue(0)
+        self.progressBar.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignVCenter)
+        self.progressBar.setTextVisible(True)
+        self.progressBar.setOrientation(Qt.Orientation.Horizontal)
+        self.progressBar.setInvertedAppearance(False)
+
+        self.verticalLayout_5.addWidget(self.progressBar)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
@@ -321,7 +327,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -329,7 +335,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Drucker Verwaltung", None))
-        self.openDocumentationAction.setText(QCoreApplication.translate("MainWindow", u"Dokumentation \u00f6ffnen", None))
+        self.openDocumentationAction.setText(QCoreApplication.translate("MainWindow", u"Dokuseite \u00f6ffnen", None))
 #if QT_CONFIG(shortcut)
         self.openDocumentationAction.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+H", None))
 #endif // QT_CONFIG(shortcut)
@@ -348,6 +354,17 @@ class Ui_MainWindow(object):
         self.createItemComboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Drucker", None))
         self.createItemComboBox.setItemText(2, QCoreApplication.translate("MainWindow", u"Standort", None))
 
+        self.installPrinterButton.setText(QCoreApplication.translate("MainWindow", u"Installieren", None))
+#if QT_CONFIG(shortcut)
+        self.installPrinterButton.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+I", None))
+#endif // QT_CONFIG(shortcut)
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.verwaltungTab), QCoreApplication.translate("MainWindow", u"Druckerverwaltung", None))
+        self.uninstallPrinterButton.setText(QCoreApplication.translate("MainWindow", u"Deinstallieren", None))
+        self.installedPrintersRefreshButton.setText(QCoreApplication.translate("MainWindow", u"Aktualisieren", None))
+#if QT_CONFIG(shortcut)
+        self.installedPrintersRefreshButton.setShortcut(QCoreApplication.translate("MainWindow", u"F5", None))
+#endif // QT_CONFIG(shortcut)
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.installedTab), QCoreApplication.translate("MainWindow", u"Installierte Drucker", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Verf\u00fcgbar:", None))
         self.driverPathLabel.setText(QCoreApplication.translate("MainWindow", u"N/A", None))
         self.availableLabel.setText(QCoreApplication.translate("MainWindow", u"N/A", None))
@@ -363,17 +380,6 @@ class Ui_MainWindow(object):
         self.driverNameLabel.setText(QCoreApplication.translate("MainWindow", u"N/A", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"DNS-Name:", None))
         self.progressBar.setFormat("")
-        self.installPrinterButton.setText(QCoreApplication.translate("MainWindow", u"Installieren", None))
-#if QT_CONFIG(shortcut)
-        self.installPrinterButton.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+I", None))
-#endif // QT_CONFIG(shortcut)
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.verwaltungTab), QCoreApplication.translate("MainWindow", u"Druckerverwaltung", None))
-        self.uninstallPrinterButton.setText(QCoreApplication.translate("MainWindow", u"Deinstallieren", None))
-        self.installedPrintersRefreshButton.setText(QCoreApplication.translate("MainWindow", u"Aktualisieren", None))
-#if QT_CONFIG(shortcut)
-        self.installedPrintersRefreshButton.setShortcut(QCoreApplication.translate("MainWindow", u"F5", None))
-#endif // QT_CONFIG(shortcut)
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.installedTab), QCoreApplication.translate("MainWindow", u"Installierte Drucker", None))
         self.menuHelp.setTitle(QCoreApplication.translate("MainWindow", u"Hilfe", None))
     # retranslateUi
 

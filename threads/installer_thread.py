@@ -4,6 +4,7 @@ import subprocess
 import os
 from PySide6.QtCore import QThread, Signal
 from models.printer import Printer
+from models.location import Location
 
 
 class InstallerThread(QThread):
@@ -19,13 +20,18 @@ class InstallerThread(QThread):
     # Signal bei einem Fehler während der Installation (mit Fehlermeldung)
     installation_failed = Signal(str)
 
-    def __init__(self, printer: Printer):
+    def __init__(self, printer: Printer, location: Location):
         super().__init__()
         self.__printer = printer
+        self.__location = location
+        
         self.__commands = self._build_commands()
 
     def _build_commands(self) -> list[str]:
         """Baut die Liste der auszuführenden Shell-Befehle."""
+        
+        printer_name = f"[{self.__location.name}] {self.__printer.name}"
+        
         port_name = f"IP_{self.__printer.dns}"
         return [
             (
@@ -34,7 +40,7 @@ class InstallerThread(QThread):
             ),
             (f'pnputil /add-driver "{os.path.join(os.getcwd(), "treiber", self.__printer.driver_inf_path)}" /install'),
             (
-                f'rundll32 printui.dll,PrintUIEntry /if /b "{self.__printer.name}" /r "{port_name}" '
+                f'rundll32 printui.dll,PrintUIEntry /if /b "{printer_name}" /r "{port_name}" '
                 f'/f "{os.path.join(os.getcwd(), "treiber", self.__printer.driver_inf_path)}" /m "{self.__printer.driver_name}" /z'
             ),
         ]
@@ -42,7 +48,7 @@ class InstallerThread(QThread):
     def run(self) -> None:
         """Führt die Installationsschritte nacheinander aus."""
         try:
-            print(os.path.join(os.getcwd(), "treiber", self.__printer.driver_inf_path))
+            
             for cmd in self.__commands:
                 self.__run_command(cmd)
                 self.step_finished.emit()

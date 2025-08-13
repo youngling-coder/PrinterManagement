@@ -1,6 +1,6 @@
 # models/printer.py
 
-import socket
+from icmplib import ping
 from typing import Dict, Any
 
 
@@ -14,12 +14,13 @@ class Printer:
         self.driver_name = driver_name
         self.driver_inf_path = driver_inf_path
 
-    def is_available(self, port: int = 80, timeout: float = 1.0) -> bool:
+    def is_available(self,  timeout: float = 2.0) -> bool:
         """Prüft die Netzwerkverfügbarkeit des Druckers."""
         try:
-            with socket.create_connection((self.dns, port), timeout=timeout):
-                return True
-        except (socket.timeout, ConnectionRefusedError, OSError):
+            host = ping(self.dns, count=2, timeout=timeout)
+            return host.is_alive
+        
+        except Exception as e:
             return False
 
     def to_dict(self) -> Dict[str, Any]:

@@ -38,10 +38,10 @@ class InstallerThread(QThread):
                 f'cscript "C:\\Windows\\System32\\Printing_Admin_Scripts\\de-DE\\prnport.vbs" '
                 f"-a -r {port_name} -h {self.__printer.dns} -o raw -n 9100"
             ),
-            (f'pnputil /add-driver "{os.path.join(os.getcwd(), "treiber", self.__printer.driver_inf_path)}" /install'),
+            (f'pnputil /add-driver "{self.__printer.driver_inf_path}" /install'),
             (
                 f'rundll32 printui.dll,PrintUIEntry /if /b "{printer_name}" /r "{port_name}" '
-                f'/f "{os.path.join(os.getcwd(), "treiber", self.__printer.driver_inf_path)}" /m "{self.__printer.driver_name}" /z'
+                f'/f "{self.__printer.driver_inf_path}" /m "{self.__printer.driver_name}" /z'
             ),
         ]
 

@@ -124,7 +124,6 @@ class Ui_CreatePrinterDialog(object):
         self.label_5.setText(QCoreApplication.translate("CreatePrinterDialog", u"Treibername:", None))
         self.driverNameEdit.setText(QCoreApplication.translate("CreatePrinterDialog", u"Canon Generic PCL6 Driver", None))
         self.label_2.setText(QCoreApplication.translate("CreatePrinterDialog", u"Treiberpfad:", None))
-        self.driverPathEdit.setText(QCoreApplication.translate("CreatePrinterDialog", u"CNP60MA64.inf", None))
         self.cancelButton.setText(QCoreApplication.translate("CreatePrinterDialog", u"Abbrechen", None))
         self.createButton.setText(QCoreApplication.translate("CreatePrinterDialog", u"Erstellen", None))
     # retranslateUi

@@ -1,7 +1,6 @@
 # threads/installer_thread.py
 
 import subprocess
-import os
 from PySide6.QtCore import QThread, Signal
 from models.printer import Printer
 from models.location import Location
@@ -35,7 +34,7 @@ class InstallerThread(QThread):
         port_name = f"IP_{self.__printer.dns}"
         return [
             (
-                f'cscript "C:\\Windows\\System32\\Printing_Admin_Scripts\\de-DE\\prnport.vbs" '
+                f'cscript "C:/Windows/System32/Printing_Admin_Scripts/de-DE/prnport.vbs" '
                 f"-a -r {port_name} -h {self.__printer.dns} -o raw -n 9100"
             ),
             (f'pnputil /add-driver "{self.__printer.driver_inf_path}" /install'),

@@ -1,9 +1,10 @@
-import os
 import sqlite3
 from typing import Iterator
 from contextlib import contextmanager
 
-DB_NAME: str = "dv.db"
+# DB_NAME: str = "dv.db"
+DB_NAME: str = "//rtlnord.netrtlsrv.com/RTLNORD$/Public/install/_Skripte/DruckerVerwaltung/dv.db"
+
 SCHEMA_FILE: str = "structure.sql"
 
 

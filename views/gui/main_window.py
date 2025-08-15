@@ -10,7 +10,6 @@ from .create_location import CreateLocationDialog
 from models.printer import Printer
 from models.location import Location
 
-
 from threads.installer_thread import InstallerThread
 from threads.availability_check_thread import AvailabilityCheckThread
 from threads.load_installed_printers_thread import LoadInstalledPrintersThread
@@ -101,9 +100,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             )
             self._uninstall_printer_thread.start()
 
-    def on_printer_found(self, printer: Printer, index: int):
-        self.progressBar.setValue(index + 1)
-        self.progressBar.setFormat(
+    def on_installed_printer_found(self, printer: Printer, index: int):
+        self.statusbar.showMessage(
             f"[{index+1}/{self.installed_printer_collection_count}] Überprüfe installierte Drucker..."
         )
         new_printer_widget_item = QListWidgetItem(printer.name)
@@ -112,13 +110,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         if index + 1 == self.installed_printer_collection_count:
             self.statusbar.showMessage("Installierte Drucker wurden überpruft!", 3000)
-            self.progressBar.setFormat("")
             self.installedPrintersRefreshButton.setEnabled(True)
 
     def on_printer_collection_found(self, count: int):
-        self.progressBar.setValue(self.progressBar.value())
         self.installed_printer_collection_count = count
-        self.progressBar.setMaximum(count)
 
     def on_installed_printers_refresh(self):
 
@@ -127,12 +122,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 return
 
         self.installedPrintersRefreshButton.setEnabled(False)
-        self.progressBar.setValue(0)
         self.installedPrintersListWidget.clear()
 
         self._load_installed_printers_thread = LoadInstalledPrintersThread()
         self._load_installed_printers_thread.printer_found.connect(
-            self.on_printer_found
+            self.on_installed_printer_found
         )
         self._load_installed_printers_thread.printer_collection_found.connect(
             self.on_printer_collection_found
@@ -156,6 +150,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     printer_item = QTreeWidgetItem([printer["name"]])
                     printer_item.setData(0, Qt.UserRole, printer["dns"])
                     location_item.addChild(printer_item)
+
         self.printersTreeWidget.expandAll()
         self.statusbar.showMessage("Daten erfolgreich geladen.", 3000)
 
@@ -391,21 +386,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def on_search(self, text: str):
         # Einfache Suche, die alle Items durchgeht
         # Für große Datenmengen sollte dies optimiert werden
+
         term = text.lower()
         root = self.printersTreeWidget.invisibleRootItem()
+
+        has_visible_child = False
+
         for i in range(root.childCount()):
             location_item = root.child(i)
             location_visible = term in location_item.text(0).lower()
 
-            has_visible_child = False
+            search_by_location = term == location_item.text(0).lower()
+
             for j in range(location_item.childCount()):
                 printer_item = location_item.child(j)
 
-                # Suchen nach Name, Standort oder DNS
-                printer_visible = term in printer_item.text(
-                    0
-                ).lower() or term in printer_item.data(0, Qt.UserRole)
-                printer_item.setHidden(not printer_visible)
+                # Suchen nach Namen oder DNS
+                printer_visible = term in printer_item.text(0).lower() or \
+                term in printer_item.data(0, Qt.UserRole).lower()
+                
+                printer_item.setHidden(not (printer_visible or search_by_location))
                 if printer_visible:
                     has_visible_child = True
 

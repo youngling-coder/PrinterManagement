@@ -36,7 +36,7 @@
              </sizepolicy>
             </property>
             <property name="placeholderText">
-             <string>Geben Sie den Druckernamen ein...</string>
+             <string>Geben Sie den Druckernamen, Standort oder Domänennamen ein...</string>
             </property>
            </widget>
           </item>

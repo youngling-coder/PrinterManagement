@@ -6,15 +6,17 @@ from typing import Dict, Any
 
 class Printer:
     def __init__(
-        self, dns: str, name: str, model: str, driver_name: str, driver_inf_path: str
+        self, id: int, location_id: int, dns: str, name: str, model: str, driver_name: str, driver_inf_path: str
     ):
+        self.location_id: int = location_id
+        self.id = id
         self.dns = dns
         self.name = name
         self.model = model
         self.driver_name = driver_name
         self.driver_inf_path = driver_inf_path
 
-    def is_available(self,  timeout: float = 2.0) -> bool:
+    def is_available(self, timeout: float = 2.0) -> bool:
         """Prüft die Netzwerkverfügbarkeit des Druckers."""
         try:
             host = ping(self.dns, count=2, timeout=timeout)

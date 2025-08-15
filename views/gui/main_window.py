@@ -2,28 +2,44 @@
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QMainWindow, QMessageBox, QTreeWidgetItem, QListWidgetItem
+
 from .ui.main_window_ui import Ui_MainWindow
 from .create_printer import CreatePrinterDialog
 from .create_location import CreateLocationDialog
-from services.printer_service import (
-    PrinterService,
-    LocationNotEmptyError,
-    ItemNotFoundError,
-)
+
 from models.printer import Printer
 from models.location import Location
+
+
 from threads.installer_thread import InstallerThread
 from threads.availability_check_thread import AvailabilityCheckThread
 from threads.load_installed_printers_thread import LoadInstalledPrintersThread
 from threads.delete_installed_printer_thread import UninstallPrinterThread
+
+from crud.locations import (
+    get_locations,
+    get_location_by_name,
+    get_location_by_id,
+    create_location,
+    delete_location
+)
+from crud.printers import (
+    get_printers,
+    get_printer_by_dns,
+    get_printers_by_location_id,
+    get_printer_by_id,
+    get_printer_by_name,
+    create_printer,
+    update_printer,
+    delete_printer
+)
 import webbrowser
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
-    def __init__(self, service: PrinterService):
+    def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.service = service
         self.current_printer: Printer | None = None
         self.current_location: Location | None = None
         self.current_item: QTreeWidgetItem | None = None
@@ -40,7 +56,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def _connect_signals(self):
         self.createItemComboBox.textActivated.connect(self.on_create_item)
-        self.printersTreeWidget.currentItemChanged.connect(self.on_printer_item_changed)
+        self.printersTreeWidget.currentItemChanged.connect(self.on_item_changed)
         self.installedPrintersListWidget.currentItemChanged.connect(self.on_installed_printer_item_changed)
         self.deleteItemButton.clicked.connect(self.on_delete_item)
         self.installPrinterButton.clicked.connect(self.on_printer_install)
@@ -118,45 +134,58 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._load_installed_printers_thread.start()
 
     def on_documentation_load(self):
-        webbrowser.open("https://docs.nachtblau.tv/node/36630/revisions/39303/view")
+        webbrowser.open("https://docs.nachtblau.tv/node/36630/")
 
     def load_storage_to_gui(self):
         self.printersTreeWidget.clear()
-        locations = self.service.get_all_locations()
-        for location in locations:
-            location_item = QTreeWidgetItem([location.name])
-            self.printersTreeWidget.addTopLevelItem(location_item)
-            for printer in location.printers:
-                printer_item = QTreeWidgetItem([printer.name])
-                # Speichern des DNS-Namens als eindeutige ID im Item
-                printer_item.setData(1, 0, printer.dns)
-                location_item.addChild(printer_item)
+        locations = get_locations()
+
+        if locations:
+            for location in locations:
+                location_item = QTreeWidgetItem([location["name"]])
+                self.printersTreeWidget.addTopLevelItem(location_item)
+
+                printers = get_printers_by_location_id(location["id"])
+                for printer in printers:
+                    printer_item = QTreeWidgetItem([printer["name"]])
+                    printer_item.setData(0, Qt.UserRole, printer["dns"])
+                    location_item.addChild(printer_item)
         self.printersTreeWidget.expandAll()
         self.statusbar.showMessage("Daten erfolgreich geladen.", 3000)
 
-    def on_printer_item_changed(self, current: QTreeWidgetItem):
+    def on_item_changed(self, current: QTreeWidgetItem):
         self.current_item = current
         self.current_printer = None
         self.current_location = None
 
+        item_name = self.printersTreeWidget.currentItem().text(0)
+
         if not current or current.parent() is None:
+            self.current_location = Location.from_dict(get_location_by_name(item_name))
             self.installPrinterButton.setEnabled(False)
             self.editPrinterButton.setEnabled(False)
+            if self._check_availability_thread:
+                self._check_availability_thread.terminate()
+                self._check_availability_thread.quit()
+                self._check_availability_thread.wait()
             self.clear_printer_details()
             return
 
         # Es ist ein Drucker
-        printer_dns = current.data(1, 0)
-        result = self.service.get_printer_by_dns(printer_dns)
+        result = get_printer_by_dns(self.printersTreeWidget.currentItem().data(0, Qt.UserRole))
         if not result:
             self.clear_printer_details()
             return
 
-        printer, location = result
+        printer = Printer.from_dict(result)
+        location = Location.from_dict(get_location_by_id(printer.location_id))
         self.current_printer = printer
         self.current_location = location
         self.update_printer_details(printer, location.name)
         self.check_printer_availability(printer)
+
+        self.editPrinterButton.setEnabled(True)
+        self.installPrinterButton.setEnabled(True)
 
     def on_installed_printer_item_changed(self, current: QListWidgetItem):
         if not current:
@@ -185,7 +214,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.driverNameLabel.setText("N/A")
         self.driverPathLabel.setText("N/A")
         self.availableLabel.setText("N/A")
-        self.availableLabel.setStyleSheet("")
+        self.availableLabel.setStyleSheet("N/A")
 
     def check_printer_availability(self, printer: Printer):
         if self._check_availability_thread:
@@ -211,28 +240,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def on_create_item(self, item_type: str):
         if item_type == "Drucker":
-            self.create_printer()
+            if get_locations():
+                self.create_printer()
+            else:
+                QMessageBox.critical(self, "Fehler", "Keine Standorte vorhanden!")
+                return
+                
         elif item_type == "Standort":
             self.create_location()
         self.createItemComboBox.setCurrentIndex(0)  # Zurücksetzen
 
     def create_printer(self):
-        dialog = CreatePrinterDialog(self.service)
+        dialog = CreatePrinterDialog(self.current_location)
         if dialog.exec():
             try:
-                printer_data, location_name = dialog.get_result()
-                self.service.add_printer_to_location(printer_data, location_name)
+                printer_data = dialog.get_result()
+
+                create_printer(printer_data)
+                
                 self.load_storage_to_gui()
                 self.statusbar.showMessage("Drucker erfolgreich erstellt!", 3000)
-            except (ValueError, ItemNotFoundError) as e:
+                
+            except Exception as e:
                 QMessageBox.critical(self, "Fehler", str(e))
 
     def create_location(self):
-        dialog = CreateLocationDialog(self.service)
+        dialog = CreateLocationDialog()
         if dialog.exec():
             try:
                 location_name = dialog.get_result()
-                self.service.add_location(location_name)
+                create_location(location_name)
                 self.load_storage_to_gui()
                 self.statusbar.showMessage("Standort erfolgreich erstellt!", 3000)
             except ValueError as e:
@@ -243,15 +280,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
 
         dialog = CreatePrinterDialog(
-            self.service, printer=self.current_printer, edit_mode=True
+            printer=self.current_printer, edit_mode=True
         )
         if dialog.exec():
             try:
-                original_dns, new_data = dialog.get_result()
-                self.service.update_printer(original_dns, new_data)
+                new_data = dialog.get_result()
+                update_printer(self.current_printer.id, new_data)
                 self.load_storage_to_gui()
                 self.statusbar.showMessage("Drucker erfolgreich aktualisiert!", 3000)
-            except (ValueError, ItemNotFoundError) as e:
+            except Exception as e:
                 QMessageBox.critical(self, "Fehler", str(e))
 
     def on_delete_item(self):
@@ -271,19 +308,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if reply == QMessageBox.StandardButton.Yes:
             try:
                 if is_location:
-                    self.service.remove_location(item_name)
+                    if self.current_item.childCount() < 1:
+                        delete_location(get_location_by_name(item_name)["id"])
+
+                    else:
+                        QMessageBox.critical(self, "Fehler", f"Standort '{item_name}' enthält noch Drucker und kann nicht gelöscht werden.")
+                        return
+
                 else:
-                    location_name = self.current_item.parent().text(0)
-                    printer_dns = self.current_item.data(1, 0)
-                    self.service.remove_printer_from_location(
-                        printer_dns, location_name
-                    )
+                    printer_index = self.current_printer.id
+                    delete_printer(printer_index)
 
                 self.load_storage_to_gui()
                 self.clear_printer_details()
                 self.statusbar.showMessage("Eintrag erfolgreich gelöscht!", 3000)
 
-            except (LocationNotEmptyError, ItemNotFoundError) as e:
+            except Exception as e:
                 QMessageBox.critical(self, "Fehler", str(e))
 
     def on_printer_install(self):
@@ -348,7 +388,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 printer_item = location_item.child(j)
 
                 # Suchen nach Name, Standort oder DNS
-                printer_visible = term in printer_item.text(0).lower()
+                printer_visible = term in printer_item.text(0).lower() or term in printer_item.data(0, Qt.UserRole)
                 printer_item.setHidden(not printer_visible)
                 if printer_visible:
                     has_visible_child = True

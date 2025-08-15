@@ -2,14 +2,12 @@
 
 from PySide6.QtWidgets import QDialog, QMessageBox
 from .ui.create_location_ui import Ui_CreateLocationDialog
-from services.printer_service import PrinterService
-
+from crud.locations import get_location_by_name
 
 class CreateLocationDialog(QDialog, Ui_CreateLocationDialog):
-    def __init__(self, service: PrinterService):
+    def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.service = service
 
         self.createButton.clicked.connect(self.on_accept)
         self.cancelButton.clicked.connect(self.reject)
@@ -23,7 +21,7 @@ class CreateLocationDialog(QDialog, Ui_CreateLocationDialog):
             return
 
         # Optionale, aber benutzerfreundliche Prüfung auf Duplikate direkt in der UI
-        if self.service.get_location_by_name(location_name):
+        if get_location_by_name(location_name):
             QMessageBox.warning(
                 self,
                 "Konflikt",

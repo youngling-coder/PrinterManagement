@@ -8,3 +8,5 @@ build/
 *.bat
 treiber/
 *.ps1
+*.db
+*db-journal

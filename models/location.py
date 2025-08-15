@@ -5,7 +5,8 @@ from .printer import Printer
 
 
 class Location:
-    def __init__(self, name: str, printers: List[Printer] = None):
+    def __init__(self, id: int, name: str, printers: List[Printer] = None):
+        self.id = id
         self.name = name
         self.printers = printers or []
 
@@ -46,4 +47,4 @@ class Location:
     def from_dict(cls, data: Dict[str, Any]) -> "Location":
         """Erstellt ein Objekt aus einem Dictionary."""
         printers = [Printer.from_dict(p_data) for p_data in data.get("printers", [])]
-        return cls(name=data["name"], printers=printers)
+        return cls(**data, printers=printers)

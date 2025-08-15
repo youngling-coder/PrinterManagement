@@ -4,23 +4,26 @@ from PySide6.QtWidgets import QDialog, QFileDialog, QMessageBox
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QMouseEvent
 from .ui.create_printer_ui import Ui_CreatePrinterDialog
-from services.printer_service import PrinterService
 from models.printer import Printer
+from models.location import Location
+
 from typing import Optional, Tuple, Dict, Any
+
+from crud.locations import get_locations, get_location_by_id, get_location_by_name
 
 
 class CreatePrinterDialog(QDialog, Ui_CreatePrinterDialog):
     def __init__(
         self,
-        service: PrinterService,
+        location: Optional[Location] = None,
         printer: Optional[Printer] = None,
         edit_mode: bool = False,
     ):
         super().__init__()
         self.setupUi(self)
 
-        self.service = service
         self.printer = printer
+        self.location = location
         self.edit_mode = edit_mode
 
         self._populate_locations()
@@ -40,9 +43,12 @@ class CreatePrinterDialog(QDialog, Ui_CreatePrinterDialog):
             self.setWindowTitle("Neuen Drucker erstellen")
 
     def _populate_locations(self):
-        locations = self.service.get_all_locations()
+        locations = get_locations()
         for location in locations:
-            self.locationComboBox.addItem(location.name)
+            self.locationComboBox.addItem(location["name"])
+
+        if self.location:
+            self.locationComboBox.setCurrentText(self.location.name)
 
         if not locations and not self.edit_mode:
             QMessageBox.warning(
@@ -60,12 +66,10 @@ class CreatePrinterDialog(QDialog, Ui_CreatePrinterDialog):
         self.driverPathEdit.setText(self.printer.driver_inf_path)
 
         # Den Standort des Druckers in der ComboBox auswählen
-        _, location = self.service.get_printer_by_dns(self.printer.dns)
+        location = get_location_by_id(self.printer.location_id)
+
         if location:
-            self.locationComboBox.setCurrentText(location.name)
-            self.locationComboBox.setEnabled(
-                False
-            )  # Standort kann nicht geändert werden
+            self.locationComboBox.setCurrentText(location["name"])
 
     def _on_accept(self):
         # Einfache Validierung, ob alle Felder ausgefüllt sind
@@ -91,15 +95,12 @@ class CreatePrinterDialog(QDialog, Ui_CreatePrinterDialog):
             "model": self.printerModelEdit.text().strip(),
             "driver_name": self.driverNameEdit.text().strip(),
             "driver_inf_path": self.driverPathEdit.text().strip(),
+            "location_id": get_location_by_name(self.locationComboBox.currentText())["id"],
         }
 
-        if self.edit_mode:
-            # Gibt die Original-DNS und die neuen Daten zurück
-            return self.printer.dns, data
-        else:
-            # Gibt die neuen Daten und den ausgewählten Standortnamen zurück
-            location_name = self.locationComboBox.currentText()
-            return data, location_name
+        # Gibt die neuen Daten und den ausgewählten Standortnamen zurück
+
+        return data
 
     def _select_driver_file(self, event: QMouseEvent):
         # Zeigt einen Dateidialog, um eine .inf Datei auszuwählen

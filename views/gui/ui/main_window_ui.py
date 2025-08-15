@@ -339,7 +339,7 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(shortcut)
         self.openDocumentationAction.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+H", None))
 #endif // QT_CONFIG(shortcut)
-        self.searchEdit.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Geben Sie den Druckernamen ein...", None))
+        self.searchEdit.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Geben Sie den Druckernamen, Standort oder Domänennamen ein...", None))
         ___qtreewidgetitem = self.printersTreeWidget.headerItem()
         ___qtreewidgetitem.setText(0, QCoreApplication.translate("MainWindow", u"Standort", None));
         self.deleteItemButton.setText(QCoreApplication.translate("MainWindow", u"L\u00f6schen", None))

@@ -32,6 +32,8 @@ class LoadInstalledPrintersThread(QThread):
         
                 printer = Printer.from_dict(
                     {
+                        "id": None,
+                        "location_id": None,
                         "dns": "N/A" if not printers else printers[0].PortName[3:],
                         "name": printer_name if not printers else printers[0].Name,
                         "model": "N/A",

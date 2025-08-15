@@ -6,7 +6,14 @@ from typing import Dict, Any
 
 class Printer:
     def __init__(
-        self, id: int, location_id: int, dns: str, name: str, model: str, driver_name: str, driver_inf_path: str
+        self,
+        id: int,
+        location_id: int,
+        dns: str,
+        name: str,
+        model: str,
+        driver_name: str,
+        driver_inf_path: str,
     ):
         self.location_id: int = location_id
         self.id = id
@@ -21,7 +28,7 @@ class Printer:
         try:
             host = ping(self.dns, count=2, timeout=timeout)
             return host.is_alive
-        
+
         except Exception as e:
             return False
 

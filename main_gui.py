@@ -5,6 +5,7 @@ from PySide6.QtWidgets import QApplication
 from crud.database import create_db_from_schema
 from views.gui.main_window import MainWindow
 
+
 def main():
     """Initialisiert und startet die grafische Benutzeroberfläche."""
     app = QApplication(sys.argv)
@@ -17,6 +18,7 @@ def main():
     gui.show()
 
     sys.exit(app.exec())
+
 
 if __name__ == "__main__":
     create_db_from_schema()

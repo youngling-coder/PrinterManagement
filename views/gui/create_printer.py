@@ -95,7 +95,9 @@ class CreatePrinterDialog(QDialog, Ui_CreatePrinterDialog):
             "model": self.printerModelEdit.text().strip(),
             "driver_name": self.driverNameEdit.text().strip(),
             "driver_inf_path": self.driverPathEdit.text().strip(),
-            "location_id": get_location_by_name(self.locationComboBox.currentText())["id"],
+            "location_id": get_location_by_name(self.locationComboBox.currentText())[
+                "id"
+            ],
         }
 
         # Gibt die neuen Daten und den ausgewählten Standortnamen zurück

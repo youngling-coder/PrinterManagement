@@ -1,7 +1,5 @@
 colorama
 black
 pyinstaller
-prettytable
 pyside6
-pywin32
 wmi

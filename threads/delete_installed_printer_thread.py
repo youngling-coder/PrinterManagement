@@ -3,6 +3,7 @@
 from PySide6.QtCore import QThread, Signal
 import wmi
 
+
 class UninstallPrinterThread(QThread):
 
     printer_uninstalled = Signal(str)
@@ -12,7 +13,6 @@ class UninstallPrinterThread(QThread):
         super().__init__()
 
         self.printer_name = printer_name
-
 
     def run(self):
         try:
@@ -30,7 +30,11 @@ class UninstallPrinterThread(QThread):
             if error_info.hresult == -2147217405:
                 self.printer_uninstall_failed.emit(f"Zugriff verweigert!")
             else:
-                self.printer_uninstall_failed.emit(f"Ein WMI Fehler ist aufgetreten: : {e}")
-            
+                self.printer_uninstall_failed.emit(
+                    f"Ein WMI Fehler ist aufgetreten: : {e}"
+                )
+
         except Exception as e:
-            self.printer_uninstall_failed.emit(f"Ein unerwarteter Fehler ist aufgetreten: {e}")
+            self.printer_uninstall_failed.emit(
+                f"Ein unerwarteter Fehler ist aufgetreten: {e}"
+            )

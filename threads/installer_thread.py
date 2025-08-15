@@ -24,14 +24,14 @@ class InstallerThread(QThread):
         super().__init__()
         self.__printer = printer
         self.__location = location
-        
+
         self.__commands = self._build_commands()
 
     def _build_commands(self) -> list[str]:
         """Baut die Liste der auszuführenden Shell-Befehle."""
-        
+
         printer_name = f"[{self.__location.name}] {self.__printer.name}"
-        
+
         port_name = f"IP_{self.__printer.dns}"
         return [
             (
@@ -48,7 +48,7 @@ class InstallerThread(QThread):
     def run(self) -> None:
         """Führt die Installationsschritte nacheinander aus."""
         try:
-            
+
             for cmd in self.__commands:
                 self.__run_command(cmd)
                 self.step_finished.emit()

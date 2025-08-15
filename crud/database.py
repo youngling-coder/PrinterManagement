@@ -23,7 +23,7 @@ def get_db_cursor() -> Iterator[sqlite3.Cursor]:
     conn = sqlite3.connect(DB_NAME)
     conn.row_factory = dict_factory
     cursor = conn.cursor()
-    
+
     try:
         yield cursor
     except sqlite3.Error as e:
@@ -48,7 +48,7 @@ def create_db_from_schema():
     with get_db_cursor() as cursor:
 
         # Read the schema file
-        with open(SCHEMA_FILE, 'r') as f:
+        with open(SCHEMA_FILE, "r") as f:
             sql_script = f.read()
 
         # Execute the entire script

@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QDialog, QMessageBox
 from .ui.create_location_ui import Ui_CreateLocationDialog
 from crud.locations import get_location_by_name
 
+
 class CreateLocationDialog(QDialog, Ui_CreateLocationDialog):
     def __init__(self):
         super().__init__()
